@@ -1,0 +1,341 @@
+.health-analysis-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f2f5;
+}
+
+.health-analysis-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.health-analysis-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.back-button {
+  background-color: transparent;
+  border: 1px solid #1890ff;
+  color: #1890ff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  background-color: #1890ff;
+  color: white;
+}
+
+@media (min-width: 992px) {
+  .health-analysis-content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  
+  .health-analysis-section {
+    flex: 1;
+  }
+}
+
+.health-analysis-section {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.health-analysis-section h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #333;
+  font-size: 1.3rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.section-description {
+  margin-bottom: 20px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* 分析表单样式 */
+.analysis-form {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.date-input,
+.analysis-type-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.date-input:focus,
+.analysis-type-select:focus,
+.description-textarea:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.description-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+.analyze-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s;
+  margin-top: 8px;
+}
+
+.analyze-button:hover {
+  background-color: #40a9ff;
+}
+
+.analyze-button:active {
+  background-color: #096dd9;
+}
+
+/* 分析信息卡片样式 */
+.analysis-info-card {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.info-item {
+  display: flex;
+  padding: 16px;
+  background-color: white;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-icon {
+  font-size: 2rem;
+  margin-right: 16px;
+  color: #1890ff;
+  flex-shrink: 0;
+}
+
+.info-content {
+  flex-grow: 1;
+}
+
+.info-content h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.info-content p {
+  margin: 0;
+  color: #666;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+/* 原有样式保留（如果需要） */
+.health-status-card {
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+}
+
+.coming-soon-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #1890ff;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+.placeholder-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.placeholder-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  color: #1890ff;
+}
+
+.placeholder-content p {
+  text-align: center;
+  color: #666;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+/* 分析结果样式 */
+.analysis-result {
+  background-color: #f0f8ff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  border-left: 4px solid #1890ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.analysis-result h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #1890ff;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #d9e8ff;
+  padding-bottom: 10px;
+}
+
+.analysis-date {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: -10px;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.result-content {
+  line-height: 1.6;
+  color: #333;
+  margin-top: 15px;
+}
+
+.result-content p {
+  margin-bottom: 12px;
+}
+
+.result-content strong {
+  font-weight: 600;
+  color: #1890ff;
+}
+
+/* Markdown标题样式 */
+.result-content h2 {
+  font-size: 1.5rem;
+  margin-top: 25px;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  color: #222;
+}
+
+.result-content h3 {
+  font-size: 1.3rem;
+  margin-top: 20px;
+  margin-bottom: 12px;
+  color: #303030;
+}
+
+.result-content h4 {
+  font-size: 1.1rem;
+  margin-top: 18px;
+  margin-bottom: 10px;
+  color: #404040;
+  font-weight: 600;
+}
+
+/* 确保段落正确显示 */
+.result-content p:empty {
+  height: 1em; /* 为空行提供空间 */
+}
+
+.error-message {
+  background-color: #fff1f0;
+  border: 1px solid #ffccc7;
+  border-radius: 4px;
+  padding: 10px 15px;
+  color: #f5222d;
+  margin-bottom: 15px;
+}
+
+/* 加载状态样式 */
+.analyze-button:disabled {
+  background-color: #b7e3ff;
+  cursor: not-allowed;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.loading-container p {
+  margin-top: 16px;
+  color: #666;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #1890ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+} 

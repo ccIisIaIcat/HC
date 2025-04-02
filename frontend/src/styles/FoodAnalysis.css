@@ -1,0 +1,596 @@
+.food-analysis-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f2f5;
+}
+
+.food-analysis-main {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.food-analysis-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.food-analysis-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.food-analysis-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 在大屏幕上使用水平布局 */
+@media (min-width: 992px) {
+  .food-analysis-content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  
+  .upload-section {
+    flex: 1;
+    max-width: 35%;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+  }
+  
+  .result-section {
+    flex: 2;
+  }
+}
+
+/* 在小屏幕上使用垂直布局 */
+@media (max-width: 991px) {
+  .food-analysis-content {
+    flex-direction: column;
+  }
+  
+  .upload-section, .result-section {
+    width: 100%;
+  }
+}
+
+.upload-section, .result-section {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.upload-section h3, .result-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.back-button {
+  background-color: transparent;
+  border: 1px solid #1890ff;
+  color: #1890ff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  background-color: #1890ff;
+  color: white;
+}
+
+.upload-area {
+  border: 2px dashed #d9d9d9;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.upload-area:hover, .upload-area.dragging {
+  border-color: #1890ff;
+  background-color: rgba(24, 144, 255, 0.05);
+}
+
+.upload-area.disabled {
+  border-color: #d9d9d9;
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.upload-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.upload-placeholder p {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.upload-placeholder span {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.file-input {
+  display: none;
+}
+
+.preview-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image-preview {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 4px;
+}
+
+.preview-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: 4px;
+}
+
+.preview-container:hover .preview-overlay {
+  opacity: 1;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.analyze-button, .reset-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.analyze-button {
+  background-color: #1890ff;
+  color: white;
+  flex-grow: 1;
+}
+
+.analyze-button:hover:not(:disabled) {
+  background-color: #40a9ff;
+}
+
+.analyze-button:disabled {
+  background-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.reset-button {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.reset-button:hover {
+  background-color: #e6e6e6;
+}
+
+/* 图片描述输入框区域样式 */
+.description-input-container {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+.description-input-container label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+}
+
+.image-description-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  resize: vertical;
+  min-height: 60px;
+  transition: border 0.3s;
+}
+
+.image-description-input:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.image-description-input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.description-help-text {
+  display: block;
+  margin-top: 6px;
+  color: #888;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.result-card {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.result-header {
+  padding: 15px 20px;
+  background-color: #1890ff;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.result-header h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.food-weight {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.nutrition-info {
+  padding: 20px;
+}
+
+.nutrition-section {
+  margin-bottom: 25px;
+}
+
+.nutrition-section:last-child {
+  margin-bottom: 0;
+}
+
+.nutrition-section h5 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #1890ff;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.nutrition-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.nutrition-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.nutrition-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.nutrition-value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 可编辑营养素输入样式 */
+.nutrition-item.editable {
+  position: relative;
+}
+
+.nutrition-value-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nutrition-input {
+  width: 70px;
+  padding: 5px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 1rem;
+  text-align: right;
+}
+
+.nutrition-input:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.nutrition-unit {
+  font-size: 0.9rem;
+  color: #666;
+  white-space: nowrap;
+}
+
+/* 编辑食物重量样式 */
+.food-weight-edit {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: white;
+  font-size: 1rem;
+}
+
+.weight-input {
+  width: 60px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.weight-input:focus {
+  outline: none;
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 响应式样式调整 */
+@media (max-width: 768px) {
+  .nutrition-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+  
+  .nutrition-input {
+    width: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nutrition-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+  
+  .nutrition-input {
+    width: 50px;
+  }
+  
+  .result-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .food-weight-edit {
+    margin-left: 0;
+  }
+}
+
+/* 添加新的记录表单样式 */
+.record-form {
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+.record-form h5 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #1890ff;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+  font-weight: 500;
+}
+
+.meal-type-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.meal-type-select:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.meal-type-select:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.notes-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.notes-textarea:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.notes-textarea:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.record-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.save-button, .discard-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+  font-weight: 500;
+  flex: 1;
+}
+
+.save-button {
+  background-color: #52c41a;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #73d13d;
+}
+
+.save-button:disabled {
+  background-color: #d9d9d9;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.save-button:disabled:hover {
+  background-color: #d9d9d9;
+  color: #999;
+  border: none;
+}
+
+.discard-button {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.discard-button:hover {
+  background-color: #fafafa;
+  color: #ff4d4f;
+  border: 1px solid #ff4d4f;
+}
+
+.discard-button:disabled {
+  background-color: #d9d9d9;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.discard-button:disabled:hover {
+  background-color: #d9d9d9;
+  color: #999;
+  border: none;
+}
+
+/* 响应式调整 */
+@media (max-width: 576px) {
+  .record-buttons {
+    flex-direction: column;
+  }
+}
+
+/* 食物名称输入框样式 */
+.food-name-input {
+  margin-left: 8px;
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 1rem;
+  min-width: 150px;
+  width: auto;
+}
+
+.food-name-input:focus {
+  outline: none;
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 响应式调整 */
+@media (max-width: 576px) {
+  .food-name-input {
+    min-width: 120px;
+    margin-top: 8px;
+    display: block;
+  }
+} 

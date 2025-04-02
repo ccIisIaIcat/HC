@@ -1,0 +1,51 @@
+/* 编辑页面特定样式 */
+.wide-button {
+  width: 100%;
+  justify-content: center;
+}
+
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 1.2rem;
+  color: #1890ff;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* 食物名称输入框样式 */
+.food-name-input {
+  margin-left: 8px;
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 1rem;
+  min-width: 150px;
+  width: auto;
+}
+
+.food-name-input:focus {
+  outline: none;
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 响应式调整 */
+@media (max-width: 576px) {
+  .food-name-input {
+    min-width: 120px;
+    margin-top: 8px;
+    display: block;
+  }
+} 
