@@ -77,6 +77,52 @@
 				"navigationBarTextStyle": "white",
 				"backgroundColor": "#000000"
 			}
+		},
+		{
+			"path": "pages/checkcheck/index",
+			"style": {
+				"navigationBarTitleText": "检查检查",
+				"navigationBarBackgroundColor": "#000000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#000000"
+			}
+		},
+		{
+			"path": "pages/food-history/visualization",
+			"style": {
+				"navigationBarTitleText": "饮食可视化分析",
+				"navigationBarBackgroundColor": "#000000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#000000"
+			}
+		},
+		{
+			"path": "pages/health-state/index",
+			"style": {
+				"navigationBarTitleText": "健康状态记录",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/health-state/history",
+			"style": {
+				"navigationBarTitleText": "健康状态历史",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/health-state/detail",
+			"style": {
+				"navigationBarTitleText": "健康状态详情",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/health-state/edit",
+			"style": {
+				"navigationBarTitleText": "编辑健康状态",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"globalStyle": {

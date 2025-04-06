@@ -11,8 +11,18 @@
         <view class="cyber-line"></view>
       </view>
       
+      <view class="function-item" @click="navigateTo('/pages/food-history/visualization')">
+        <text class="function-title">饮食可视化分析</text>
+        <view class="cyber-line"></view>
+      </view>
+      
       <view class="function-item" @click="navigateTo('/pages/health/analysis')">
         <text class="function-title">健康分析</text>
+        <view class="cyber-line"></view>
+      </view>
+      
+      <view class="function-item" @click="navigateTo('/pages/health-state/index')">
+        <text class="function-title">健康状态记录</text>
         <view class="cyber-line"></view>
       </view>
     </view>
@@ -115,8 +125,8 @@ onMounted(() => {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
   padding: 20px;
   margin-top: 60px;
 }
@@ -125,7 +135,7 @@ onMounted(() => {
   background: rgba(0, 223, 255, 0.1);
   border: 2px solid rgba(0, 223, 255, 0.5);
   border-radius: 8px;
-  padding: 30px 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -134,6 +144,7 @@ onMounted(() => {
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 223, 255, 0.2);
   transition: all 0.3s ease;
+  aspect-ratio: 1 / 1; /* 使按钮成为正方形 */
 }
 
 .function-item::before {
@@ -160,6 +171,31 @@ onMounted(() => {
 
 .function-item:active::before {
   opacity: 1;
+}
+
+.cat-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  transform: rotate(15deg);
+  animation: cat-bounce 2s ease-in-out infinite;
+}
+
+.cat-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes cat-bounce {
+  0%, 100% {
+    transform: rotate(15deg) translateY(0);
+  }
+  50% {
+    transform: rotate(15deg) translateY(-5px);
+  }
 }
 
 .cyber-line {
@@ -195,5 +231,6 @@ onMounted(() => {
                0 0 20px rgba(0, 223, 255, 0.3),
                0 0 30px rgba(0, 223, 255, 0.1);
   margin-bottom: 10px;
+  padding: 0 20px;
 }
 </style> 

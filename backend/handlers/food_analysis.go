@@ -100,7 +100,7 @@ func (h *FoodAnalysisHandler) UploadAndAnalyze(c *gin.Context) {
 // analyzeImage 使用GPT-4 Vision API分析图片
 func (h *FoodAnalysisHandler) analyzeImage(imageBytes []byte) (*models.FoodAnalysis, error) {
 	// 构建API请求
-	url := "https://api.openai.com/v1/chat/completions"
+	url := "https://api.openai-proxy.org/v1/chat/completions"
 	prompt := `分析这张图片中的食物。请提供以下信息，必须严格按照指定的JSON格式返回：
 {
     "hasFood": true,  // 布尔值，表示是否包含食物
@@ -260,9 +260,12 @@ func (h *FoodAnalysisHandler) analyzeImage(imageBytes []byte) (*models.FoodAnaly
 // analyzeImageWithDescription 使用GPT-4 Vision API结合图片描述分析图片
 func (h *FoodAnalysisHandler) analyzeImageWithDescription(imageBytes []byte, description string) (*models.FoodAnalysis, error) {
 	// 构建API请求
-	url := "https://api.openai.com/v1/chat/completions"
-	prompt := fmt.Sprintf(`分析这张图片中的食物，分析时尤其注意热量和质量的比例关系，
-	可以先考虑食物中的主要成分和高热量成分的质量，再按照比例推算热量，用户描述: %s
+	url := "https://api.openai-proxy.org/v1/chat/completions"
+	prompt := fmt.Sprintf(`分析这张图片中的食物，
+	1、分析时尤其注意热量和质量的比例关系，
+	2、可以先考虑食物中的主要成分和高热量成分的质量，再按照比例推算热量，
+	3、用户描述: %s
+	4、用户可能在上传的图片包含多个食物，在名称中需一一列举，在考虑营养成分时整体考虑，考虑食物的比例，各自的营养成分，给出整体评价
 	请提供以下信息，必须严格按照指定的JSON格式返回：
 {
     "hasFood": true,  // 布尔值，表示是否包含食物

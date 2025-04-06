@@ -98,6 +98,14 @@ func main() {
 
 			// 健康分析路由
 			authorized.POST("/health-analysis", healthAnalysisHandler.AnalyzeHealth)
+
+			// 用户健康状态路由
+			authorized.POST("/health-states", handlers.CreateUserHealthStateHandler)
+			authorized.GET("/health-states", handlers.GetUserHealthStatesHandler)
+			authorized.GET("/health-states/:id", handlers.GetUserHealthStateHandler)
+			authorized.PUT("/health-states/:id", handlers.UpdateUserHealthStateHandler)
+			authorized.DELETE("/health-states/:id", handlers.DeleteUserHealthStateHandler)
+			authorized.GET("/health-states/latest", handlers.GetLatestUserHealthStateHandler)
 		}
 
 		// 管理员路由

@@ -189,39 +189,21 @@ interface NutritionData {
   saturatedFat: number;
   transFat: number;
   unsaturatedFat: number;
-  cholesterol: number;
   carbohydrates: number;
   sugar: number;
   fiber: number;
-  water: number;
   vitamins: {
     vitaminA: number;
     vitaminC: number;
     vitaminD: number;
-    vitaminE: number;
-    vitaminK: number;
     vitaminB1: number;
     vitaminB2: number;
-    vitaminB3: number;
-    vitaminB5: number;
-    vitaminB6: number;
-    vitaminB7: number;
-    vitaminB9: number;
-    vitaminB12: number;
   };
   minerals: {
     calcium: number;
     iron: number;
-    magnesium: number;
-    phosphorus: number;
-    potassium: number;
     sodium: number;
-    zinc: number;
-    copper: number;
-    manganese: number;
-    selenium: number;
-    chromium: number;
-    iodine: number;
+    potassium: number;
   };
 }
 
@@ -307,42 +289,25 @@ const basicNutrients = {
   totalFat: '总脂肪',
   saturatedFat: '饱和脂肪',
   transFat: '反式脂肪',
-  cholesterol: '胆固醇',
+  unsaturatedFat: '不饱和脂肪',
   carbohydrates: '碳水化合物',
   sugar: '糖',
-  fiber: '膳食纤维',
-  water: '水分'
+  fiber: '膳食纤维'
 } as const;
 
 const vitaminNutrients = {
   vitaminA: '维生素A',
   vitaminC: '维生素C',
   vitaminD: '维生素D',
-  vitaminE: '维生素E',
-  vitaminK: '维生素K',
   vitaminB1: '维生素B1',
-  vitaminB2: '维生素B2',
-  vitaminB3: '维生素B3',
-  vitaminB5: '维生素B5',
-  vitaminB6: '维生素B6',
-  vitaminB7: '维生素B7',
-  vitaminB9: '维生素B9',
-  vitaminB12: '维生素B12'
+  vitaminB2: '维生素B2'
 } as const;
 
 const mineralNutrients = {
   calcium: '钙',
   iron: '铁',
-  magnesium: '镁',
-  phosphorus: '磷',
-  potassium: '钾',
   sodium: '钠',
-  zinc: '锌',
-  copper: '铜',
-  manganese: '锰',
-  selenium: '硒',
-  chromium: '铬',
-  iodine: '碘'
+  potassium: '钾'
 } as const;
 
 const nutritionLabels = {
@@ -351,36 +316,19 @@ const nutritionLabels = {
   totalFat: '总脂肪',
   saturatedFat: '饱和脂肪',
   transFat: '反式脂肪',
-  cholesterol: '胆固醇',
+  unsaturatedFat: '不饱和脂肪',
   carbohydrates: '碳水化合物',
   sugar: '糖',
   fiber: '膳食纤维',
-  water: '水分',
   vitaminA: '维生素A',
   vitaminC: '维生素C',
   vitaminD: '维生素D',
-  vitaminE: '维生素E',
-  vitaminK: '维生素K',
   vitaminB1: '维生素B1',
   vitaminB2: '维生素B2',
-  vitaminB3: '维生素B3',
-  vitaminB5: '维生素B5',
-  vitaminB6: '维生素B6',
-  vitaminB7: '维生素B7',
-  vitaminB9: '维生素B9',
-  vitaminB12: '维生素B12',
   calcium: '钙',
   iron: '铁',
-  magnesium: '镁',
-  phosphorus: '磷',
-  potassium: '钾',
   sodium: '钠',
-  zinc: '锌',
-  copper: '铜',
-  manganese: '锰',
-  selenium: '硒',
-  chromium: '铬',
-  iodine: '碘'
+  potassium: '钾'
 };
 
 const nutritionUnits = {
@@ -389,36 +337,19 @@ const nutritionUnits = {
   totalFat: '克',
   saturatedFat: '克',
   transFat: '克',
-  cholesterol: '毫克',
+  unsaturatedFat: '克',
   carbohydrates: '克',
   sugar: '克',
   fiber: '克',
-  water: '克',
   vitaminA: '微克',
   vitaminC: '毫克',
   vitaminD: '微克',
-  vitaminE: '毫克',
-  vitaminK: '微克',
   vitaminB1: '毫克',
   vitaminB2: '毫克',
-  vitaminB3: '毫克',
-  vitaminB5: '毫克',
-  vitaminB6: '毫克',
-  vitaminB7: '微克',
-  vitaminB9: '微克',
-  vitaminB12: '微克',
   calcium: '毫克',
   iron: '毫克',
-  magnesium: '毫克',
-  phosphorus: '毫克',
-  potassium: '毫克',
   sodium: '毫克',
-  zinc: '毫克',
-  copper: '毫克',
-  manganese: '毫克',
-  selenium: '微克',
-  chromium: '微克',
-  iodine: '微克'
+  potassium: '毫克'
 };
 
 // 选择图片
@@ -463,9 +394,7 @@ const toggleExpand = () => {
         // 使用Vue的响应式API确保更新被检测到
         const newNutrition = { ...result.value.nutrition };
         newNutrition.vitamins = {
-          vitaminA: 0, vitaminC: 0, vitaminD: 0, vitaminE: 0, vitaminK: 0,
-          vitaminB1: 0, vitaminB2: 0, vitaminB3: 0, vitaminB5: 0, vitaminB6: 0,
-          vitaminB7: 0, vitaminB9: 0, vitaminB12: 0
+          vitaminA: 0, vitaminC: 0, vitaminD: 0, vitaminB1: 0, vitaminB2: 0
         };
         result.value.nutrition = newNutrition;
       }
@@ -476,9 +405,7 @@ const toggleExpand = () => {
         // 使用Vue的响应式API确保更新被检测到
         const newNutrition = { ...result.value.nutrition };
         newNutrition.minerals = {
-          calcium: 0, iron: 0, magnesium: 0, phosphorus: 0, potassium: 0,
-          sodium: 0, zinc: 0, copper: 0, manganese: 0, selenium: 0,
-          chromium: 0, iodine: 0
+          calcium: 0, iron: 0, sodium: 0, potassium: 0
         };
         result.value.nutrition = newNutrition;
       }
@@ -527,41 +454,23 @@ const handleAnalyze = async () => {
         saturatedFat: 0,
         transFat: 0,
         unsaturatedFat: 0,
-        cholesterol: 0,
         carbohydrates: 0,
         sugar: 0,
         fiber: 0,
-        water: 0,
         
         vitamins: {
           vitaminA: 0,
           vitaminC: 0,
           vitaminD: 0,
-          vitaminE: 0,
-          vitaminK: 0,
           vitaminB1: 0,
-          vitaminB2: 0,
-          vitaminB3: 0,
-          vitaminB5: 0,
-          vitaminB6: 0,
-          vitaminB7: 0,
-          vitaminB9: 0,
-          vitaminB12: 0
+          vitaminB2: 0
         },
         
         minerals: {
           calcium: 0,
           iron: 0,
-          magnesium: 0,
-          phosphorus: 0,
-          potassium: 0,
           sodium: 0,
-          zinc: 0,
-          copper: 0,
-          manganese: 0,
-          selenium: 0,
-          chromium: 0,
-          iodine: 0
+          potassium: 0
         }
       }
     };
@@ -634,61 +543,83 @@ const handleMealTypeChange = (e: { detail: { value: number } }) => {
 
 // 保存记录
 const handleSaveRecord = async () => {
-  if (!result.value) return;
-  
-  loading.value = true;
   try {
-    const recordData: CreateFoodRecordData = {
-      // 基础信息
+    // 检查token是否存在
+    const token = uni.getStorageSync('token');
+    if (!token) {
+      uni.showToast({
+        title: '请先登录',
+        icon: 'none'
+      });
+      setTimeout(() => {
+        uni.navigateTo({
+          url: '/pages/login/index'
+        });
+      }, 1500);
+      return;
+    }
+
+    // 检查分析结果是否存在
+    if (!result.value) {
+      uni.showToast({
+        title: '请先分析食物',
+        icon: 'none'
+      });
+      return;
+    }
+
+    // 构建食物记录数据
+    const foodRecord = {
       food_name: result.value.foodType,
       weight: result.value.weight,
-      record_time: new Date().toISOString(),
-      meal_type: mealTypes[mealTypeIndex.value],
-      notes: notes.value,
-
-      // 基本营养素
       calories: result.value.nutrition.calories,
       protein: result.value.nutrition.protein,
       total_fat: result.value.nutrition.totalFat,
-      saturated_fat: result.value.nutrition.saturatedFat,
-      trans_fat: result.value.nutrition.transFat,
-      unsaturated_fat: result.value.nutrition.unsaturatedFat,
+      saturated_fat: 0, // 默认值
+      trans_fat: 0, // 默认值
+      unsaturated_fat: 0, // 默认值
       carbohydrates: result.value.nutrition.carbohydrates,
       sugar: result.value.nutrition.sugar,
       fiber: result.value.nutrition.fiber,
-
-      // 维生素
       vitamin_a: result.value.nutrition.vitamins.vitaminA,
       vitamin_c: result.value.nutrition.vitamins.vitaminC,
       vitamin_d: result.value.nutrition.vitamins.vitaminD,
-      vitamin_b1: result.value.nutrition.vitamins.vitaminB1,
-      vitamin_b2: result.value.nutrition.vitamins.vitaminB2,
-
-      // 矿物质
+      vitamin_b1: 0, // 默认值
+      vitamin_b2: 0, // 默认值
       calcium: result.value.nutrition.minerals.calcium,
       iron: result.value.nutrition.minerals.iron,
       sodium: result.value.nutrition.minerals.sodium,
-      potassium: result.value.nutrition.minerals.potassium
+      potassium: result.value.nutrition.minerals.potassium,
+      meal_type: mealTypes[mealTypeIndex.value],
+      record_time: new Date().toISOString(),
+      notes: notes.value
     };
+
+    // 调用API保存记录
+    const response = await api.food.createFoodRecord(foodRecord);
     
-    // 使用类型断言将数据转为API需要的格式
-    await api.food.createFoodRecord(recordData as any);
-    
+    if (response && response.record) {
+      uni.showToast({
+        title: '保存成功',
+        icon: 'success'
+      });
+      
+      // 重置表单
+      handleReset();
+      
+      // 返回上一页
+      setTimeout(() => {
+        uni.navigateBack();
+      }, 1500);
+    } else {
+      throw new Error('保存失败：响应数据格式错误');
+    }
+  } catch (error: any) {
+    console.error('保存食物记录失败:', error);
     uni.showToast({
-      title: '记录保存成功',
-      icon: 'success'
-    });
-    
-    handleReset();
-    
-  } catch (err) {
-    console.error('保存失败:', err);
-    uni.showToast({
-      title: '保存失败，请重试',
+      title: error?.message || '保存失败，请重试',
       icon: 'none'
     });
-  } finally {
-    loading.value = false;
   }
 };
 

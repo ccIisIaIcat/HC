@@ -29,6 +29,32 @@ function responseInterceptor(response) {
   
   console.log(`响应状态码: ${statusCode}`, '响应数据:', JSON.stringify(data).substring(0, 500));
   
+  // 处理401未授权错误
+  if (statusCode === 401) {
+    // 清除本地存储的token和用户信息
+    uni.removeStorageSync('token');
+    uni.removeStorageSync('user');
+    
+    // 显示提示
+    uni.showToast({
+      title: '登录已过期，请重新登录',
+      icon: 'none',
+      duration: 2000
+    });
+    
+    // 延迟跳转到登录页面，让用户看到提示
+    setTimeout(() => {
+      uni.reLaunch({
+        url: '/pages/login/index'
+      });
+    }, 1500);
+    
+    // 抛出错误
+    const error = new Error('登录已过期，请重新登录');
+    error.response = response;
+    throw error;
+  }
+  
   // 请求成功
   if (statusCode >= 200 && statusCode < 300) {
     // 直接返回响应数据

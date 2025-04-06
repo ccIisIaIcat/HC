@@ -3,7 +3,7 @@ import { uploadFile } from '@/utils/upload';
 
 interface FoodRecord {
   // 基本信息
-  id: number;
+  id?: number;  // 创建时不需要提供id
   food_name: string;
   weight: number;
   record_time: string;

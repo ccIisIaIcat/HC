@@ -194,9 +194,33 @@ func getAnalysisTypeName(analysisType string) string {
 
 // 构建分析提示词
 func constructAnalysisPrompt(recordsStr, analysisType, userDescription string) string {
+	// 获取用户最新的健康状态
+	var latestHealthState models.UserHealthState
+	result := models.DB.Order("created_at desc").First(&latestHealthState)
+	healthStateStr := ""
+	if result.Error == nil {
+		healthStateStr = fmt.Sprintf(`
+用户最新健康状态：
+- 体重: %.1f kg
+- 身高: %.1f cm
+- BMI: %.1f
+- 心率: %d 次/分
+- 血糖: %.1f mmol/L
+- 记录时间: %s
+`,
+			latestHealthState.Weight,
+			latestHealthState.Height,
+			latestHealthState.BMI,
+			latestHealthState.HeartRate,
+			latestHealthState.FastingGlucose,
+			latestHealthState.CreatedAt.Format("2006-01-02 15:04:05"))
+	}
+
 	prompt := fmt.Sprintf(`你是一名专业的营养学家和健康顾问。请基于以下用户的饮食记录数据，进行%s。
 
 用户描述：%s
+
+用户当前基本状况：%s
 
 饮食记录数据：
 %s
@@ -205,8 +229,8 @@ func constructAnalysisPrompt(recordsStr, analysisType, userDescription string) s
 1. 首先给出一句20字以内的幽默、略带戏谑或鼓励的话。
 2. 然后基于数据进行专业、客观的分析，重点关注%s方面。
 3. 必要时可以提供一些改进建议，但不要过于严厉，保持积极鼓励的态度。
-4. 整体分析不超过500字。
-`, analysisType, userDescription, recordsStr, getAnalysisTypeDetails(analysisType))
+4. 整体分析不超过400字。
+`, analysisType, userDescription, healthStateStr, recordsStr, getAnalysisTypeDetails(analysisType))
 
 	return prompt
 }
@@ -230,7 +254,7 @@ func getAnalysisTypeDetails(analysisType string) string {
 // 调用OpenAI进行分析
 func (h *HealthAnalysisHandler) callOpenAI(prompt string) (string, error) {
 	// 构建API请求
-	url := "https://api.openai.com/v1/chat/completions"
+	url := "https://api.openai-proxy.org/v1/chat/completions"
 
 	// 构建请求体
 	requestBody := map[string]interface{}{

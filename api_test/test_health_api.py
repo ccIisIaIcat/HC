@@ -16,8 +16,8 @@ def login(email, password):
     """
     login_url = f"{BASE_URL}/login"
     login_data = {
-        "email": email,
-        "password": password
+        "email": '965377515@qq.com',
+        "password": '123456'
     }
     
     try:
