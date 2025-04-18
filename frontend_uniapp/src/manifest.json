@@ -2,8 +2,8 @@
     "name" : "饭团猫",
     "appid" : "__UNI__E16D390",
     "description" : "",
-    "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionName" : "1.0.8",
+    "versionCode" : "108",
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true,
