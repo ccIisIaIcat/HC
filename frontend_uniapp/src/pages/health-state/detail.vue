@@ -1,5 +1,12 @@
 <template>
   <view class="container">
+    <!-- 自定义导航栏 -->
+    <CustomNavBar 
+      title="健康状态详情" 
+      :showBack="true"
+      :showHome="true"
+    />
+    
     <view class="header">
       <text class="title">健康状态详情</text>
       <text class="date">{{ formatDate(record.CreatedAt) }}</text>

@@ -9,6 +9,30 @@
 			}
 		},
 		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationBarBackgroundColor": "#000000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/community/index",
+			"style": {
+				"navigationBarTitleText": "社区",
+				"navigationBarBackgroundColor": "#000000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/achievements/index",
+			"style": {
+				"navigationBarTitleText": "成就",
+				"navigationBarBackgroundColor": "#000000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
 			"path": "pages/register/index",
 			"style": {
 				"navigationBarTitleText": "注册",
@@ -125,6 +149,41 @@
 			}
 		}
 	],
+	"tabBar": {
+		"color": "#999999",
+		"selectedColor": "#00DFFF",
+		"backgroundColor": "#000000",
+		"borderStyle": "black",
+		"height": "80px",
+		"fontSize": "14px",
+		"iconWidth": "40px",
+		"list": [
+			{
+				"pagePath": "pages/dashboard/index",
+				"text": "首页",
+				"iconPath": "static/tabbar/home.png",
+				"selectedIconPath": "static/tabbar/home-active.png"
+			},
+			{
+				"pagePath": "pages/food-history/index",
+				"text": "饮食历史",
+				"iconPath": "static/tabbar/history.png",
+				"selectedIconPath": "static/tabbar/history-active.png"
+			},
+			{
+				"pagePath": "pages/health/analysis",
+				"text": "健康分析",
+				"iconPath": "static/tabbar/health.png",
+				"selectedIconPath": "static/tabbar/health-active.png"
+			},
+			{
+				"pagePath": "pages/community/index",
+				"text": "社区",
+				"iconPath": "static/tabbar/community.png",
+				"selectedIconPath": "static/tabbar/community-active.png"
+			}
+		]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "健康检查系统",

@@ -42,7 +42,7 @@ func InitDB() *gorm.DB {
 	}
 
 	// 自动迁移数据库表
-	db.AutoMigrate(&User{}, &VerificationCode{}, &FoodRecord{}, &UserHealthState{})
+	db.AutoMigrate(&User{}, &VerificationCode{}, &FoodRecord{}, &UserHealthState{}, &CheckIn{}, &AppUpdate{})
 
 	// 创建管理员账户（如果不存在）
 	var adminCount int64

@@ -1,12 +1,18 @@
 <template>
   <view class="food-history-container">
-    <view class="history-header">
-      <text class="title">我的饮食记录</text>
-      <view class="header-actions">
-        <button class="back-button" @tap="handleBack">返回仪表盘</button>
-        <button class="add-button" @tap="handleAddRecord">添加记录</button>
+    <!-- 添加自定义提示框 -->
+    <view class="custom-modal" v-if="showModal" @click="closeModal">
+      <view class="modal-content" @click.stop>
+        <view class="modal-title">ฅ^•ﻌ•^ฅ</view>
+        <view class="modal-text">确定要删除这条食物记录吗？</view>
+        <view class="modal-text">此操作不可撤销哦~</view>
+        <view class="modal-buttons">
+          <view class="modal-button cancel" @click="closeModal">再想想</view>
+          <view class="modal-button confirm" @click="confirmDelete">确定</view>
+        </view>
       </view>
     </view>
+    <CustomNavBar title="饭团猫" :showBack="false" />
 
     <view class="history-content">
       <!-- 加载状态 -->
@@ -22,7 +28,6 @@
       <!-- 空状态 -->
       <view class="empty-records" v-if="!loading && !error && records.length === 0">
         <text>暂无饮食记录</text>
-        <button class="add-button" @tap="handleAddRecord">开始记录饮食</button>
       </view>
 
       <!-- 记录列表 -->
@@ -114,6 +119,10 @@ const currentPage = ref(1);
 const totalPages = ref(1);
 const totalRecords = ref(0);
 const recordsPerPage = 10;
+
+// 添加提示框相关的变量
+const showModal = ref(false);
+const pendingDeleteId = ref<number | undefined>();
 
 // 获取食物记录列表
 const fetchFoodRecords = async (retryCount = 3) => {
@@ -233,11 +242,6 @@ const handlePageChange = (newPage: number) => {
   }
 };
 
-// 返回仪表盘
-const handleBack = () => {
-  uni.navigateBack();
-};
-
 // 编辑食物记录
 const handleEdit = (record: FoodRecord) => {
   const recordId = record.id || (record as any).ID;
@@ -255,8 +259,41 @@ const handleEdit = (record: FoodRecord) => {
   });
 };
 
-// 删除食物记录
-const handleDeleteRecord = async (id: number | undefined) => {
+// 关闭提示框
+const closeModal = () => {
+  showModal.value = false;
+  pendingDeleteId.value = undefined;
+};
+
+// 确认删除
+const confirmDelete = async () => {
+  if (!pendingDeleteId.value) {
+    return;
+  }
+
+  try {
+    loading.value = true;
+    await foodApi.deleteFoodRecord(pendingDeleteId.value);
+    uni.showToast({
+      title: '记录已删除',
+      icon: 'success'
+    });
+    // 重新获取数据
+    fetchFoodRecords();
+  } catch (err) {
+    console.error('删除记录失败:', err);
+    uni.showToast({
+      title: '删除失败，请重试',
+      icon: 'none'
+    });
+  } finally {
+    loading.value = false;
+    closeModal();
+  }
+};
+
+// 修改删除记录函数
+const handleDeleteRecord = (id: number | undefined) => {
   if (!id) {
     uni.showToast({
       title: '无法删除：记录ID不存在',
@@ -266,40 +303,8 @@ const handleDeleteRecord = async (id: number | undefined) => {
   }
   
   console.log('准备删除记录，ID:', id);
-  
-  uni.showModal({
-    title: '提示',
-    content: '确定要删除这条食物记录吗？此操作不可撤销。',
-    success: async (res) => {
-      if (res.confirm) {
-        try {
-          loading.value = true;
-          await foodApi.deleteFoodRecord(id);
-          uni.showToast({
-            title: '记录已成功删除',
-            icon: 'success'
-          });
-          // 重新获取数据
-          fetchFoodRecords();
-        } catch (err) {
-          console.error('删除记录失败:', err);
-          uni.showToast({
-            title: '删除记录失败，请稍后再试',
-            icon: 'none'
-          });
-        } finally {
-          loading.value = false;
-        }
-      }
-    }
-  });
-};
-
-// 添加新记录（跳转到食物分析页面）
-const handleAddRecord = () => {
-  uni.navigateTo({
-    url: '/pages/food-analysis/index'
-  });
+  pendingDeleteId.value = id;
+  showModal.value = true;
 };
 
 // 页面加载时获取数据
@@ -341,7 +346,7 @@ onMounted(() => {
 
 .history-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -355,75 +360,6 @@ onMounted(() => {
   text-shadow: 0 0 10px rgba(0, 223, 255, 0.5),
                0 0 20px rgba(0, 223, 255, 0.3),
                0 0 30px rgba(0, 223, 255, 0.1);
-}
-
-.header-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.back-button, .add-button {
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-size: 14px;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.back-button {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.back-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: 0.5s;
-}
-
-.back-button:active::before {
-  left: 100%;
-}
-
-.add-button {
-  background: linear-gradient(45deg, #00DFFF, #00BFFF);
-  border: none;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 223, 255, 0.5);
-}
-
-.add-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  transition: 0.5s;
-}
-
-.add-button:active::before {
-  left: 100%;
 }
 
 .loading-indicator {
@@ -612,5 +548,84 @@ onMounted(() => {
   color: rgba(255, 255, 255, 0.6);
   font-size: 14px;
   text-shadow: 0 0 5px rgba(0, 223, 255, 0.3);
+}
+
+/* 添加自定义提示框样式 */
+.custom-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: rgba(0, 223, 255, 0.1);
+  border: 2px solid rgba(0, 223, 255, 0.5);
+  border-radius: 15px;
+  padding: 20px;
+  width: 80%;
+  max-width: 300px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: modalFadeIn 0.3s ease;
+}
+
+.modal-title {
+  color: #00DFFF;
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.modal-text {
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-button {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-button.cancel {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.modal-button.confirm {
+  background: linear-gradient(45deg, #00DFFF, #00BFFF);
+  color: #fff;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 </style> 

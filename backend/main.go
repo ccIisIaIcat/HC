@@ -106,6 +106,11 @@ func main() {
 			authorized.PUT("/health-states/:id", handlers.UpdateUserHealthStateHandler)
 			authorized.DELETE("/health-states/:id", handlers.DeleteUserHealthStateHandler)
 			authorized.GET("/health-states/latest", handlers.GetLatestUserHealthStateHandler)
+
+			// 打卡相关路由
+			authorized.POST("/check-in", handlers.HandleCheckIn)        // 用户打卡
+			authorized.GET("/check-in/today", handlers.GetTodayCheckIn) // 获取今日打卡状态
+			authorized.GET("/check-ins", handlers.GetUserCheckIns)      // 获取用户所有打卡记录
 		}
 
 		// 管理员路由
@@ -114,6 +119,23 @@ func main() {
 		{
 			admin.GET("/users", handlers.GetUsers)
 			admin.GET("/stats", handlers.GetStats)
+		}
+
+		// 应用更新相关路由
+		appUpdates := api.Group("/app-updates")
+		{
+			// 需要管理员权限的路由
+			admin := appUpdates.Group("")
+			admin.Use(handlers.AuthMiddleware(), handlers.AdminAuthMiddleware())
+			{
+				admin.POST("/upload", handlers.UploadAppUpdate)
+				admin.DELETE("/:id", handlers.DeleteUpdate)
+			}
+
+			// 公开路由
+			appUpdates.GET("", handlers.GetAppUpdates)
+			appUpdates.GET("/check", handlers.CheckUpdate)
+			appUpdates.GET("/download/:platform/:version", handlers.DownloadUpdate)
 		}
 	}
 

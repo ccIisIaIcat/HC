@@ -1,14 +1,8 @@
 <template>
   <view class="health-analysis-container">
     <view class="health-analysis-content">
-      <view class="page-header">
-        <text class="page-title">健康分析</text>
-      </view>
       
       <view class="health-analysis-section">
-        <view class="section-header">
-          <text class="section-title">健康数据分析</text>
-        </view>
         <text class="section-description">
           根据您的饮食记录，我们可以为您提供个性化的健康分析报告。请选择您希望分析的时间范围和分析类型。
         </text>
@@ -123,17 +117,23 @@
 import { ref, computed } from 'vue';
 import api from '@/api';
 
+// 定义接口
+interface HealthAnalysisResponse {
+  analysis: string;
+  date?: string;
+}
+
 // 状态变量
-const startDate = ref('');
-const endDate = ref('');
-const description = ref('');
-const analysisTypeIndex = ref(0);
+const startDate = ref<string>('');
+const endDate = ref<string>('');
+const description = ref<string>('');
+const analysisTypeIndex = ref<number>(0);
 const analysisTypeOptions = ['全面分析', '营养均衡分析', '热量摄入分析', '宏量营养素分析'];
 const analysisTypes = ['comprehensive', 'nutrition', 'calories', 'macros'] as const;
-const analysisResult = ref('');
-const loading = ref(false);
-const error = ref('');
-const analysisDate = ref('');
+const analysisResult = ref<string>('');
+const loading = ref<boolean>(false);
+const error = ref<string>('');
+const analysisDate = ref<string>('');
 
 // 日期选择器事件处理函数
 const handleStartDateChange = (e: any) => {
@@ -195,38 +195,48 @@ const handleAnalyze = async () => {
     return;
   }
 
-  // 准备请求数据
-  const analysisData = {
-    start_date: startDate.value,
-    end_date: endDate.value,
-    analysis_type: getAnalysisType(),
-    description: description.value
-  };
-
-  // 发送请求
   loading.value = true;
+
   try {
-    // 如果API在开发中未准备好，使用模拟数据进行测试
-    let result;
-    try {
-      result = await api.health.analyzeHealth(analysisData);
-    } catch (apiError) {
-      console.warn('API请求失败，使用测试数据:', apiError);
-      // 使用模拟数据
-      result = getMockAnalysisResult(analysisData);
-    }
+    // 准备请求数据
+    const analysisData = {
+      start_date: startDate.value,
+      end_date: endDate.value,
+      analysis_type: getAnalysisType(),
+      description: description.value
+    };
+
+    const result = await api.health.analyzeHealth(analysisData) as HealthAnalysisResponse;
     
-    if (result && result.analysis) {
+    if (result && typeof result.analysis === 'string') {
       analysisResult.value = result.analysis;
-      // 设置分析日期
-      analysisDate.value = result.date || new Date().toLocaleString('zh-CN');
+      // 设置分析日期，确保是字符串类型
+      analysisDate.value = typeof result.date === 'string' 
+        ? result.date 
+        : new Date().toLocaleString('zh-CN', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+          });
     } else {
       analysisResult.value = "分析完成，但未返回详细结果。";
-      analysisDate.value = new Date().toLocaleString('zh-CN');
+      analysisDate.value = new Date().toLocaleString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
     }
   } catch (err: any) {
+    error.value = err?.message || '分析请求失败，请重试';
     console.error('健康分析失败:', err);
-    error.value = err.message || '分析请求失败，请稍后重试';
   } finally {
     loading.value = false;
   }

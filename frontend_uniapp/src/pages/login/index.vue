@@ -3,7 +3,7 @@
     <view class="login-box" :style="{ transform: `translateY(${scrollOffset}px)` }">
       <view class="login-header">
         <image src="@/static/logo.png" class="logo-image" mode="aspectFill" />
-        <text class="system-title">健康检查系统</text>
+        <text class="system-title">饭团猫</text>
       </view>
 
       <view v-if="message" class="success-message">
@@ -124,6 +124,7 @@ const handleInputBlur = () => {
 
 // 监听键盘高度变化
 onMounted(() => {
+  // #ifdef APP-PLUS
   uni.onKeyboardHeightChange((res) => {
     console.log('键盘高度变化:', res.height);
     keyboardHeight.value = res.height;
@@ -133,11 +134,14 @@ onMounted(() => {
       scrollOffset.value = 0;
     }
   });
+  // #endif
 });
 
 // 组件卸载时移除监听
 onUnmounted(() => {
+  // #ifdef APP-PLUS
   uni.offKeyboardHeightChange();
+  // #endif
 });
 
 // 在页面加载时初始化

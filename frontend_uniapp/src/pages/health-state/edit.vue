@@ -36,9 +36,8 @@
             <input 
               type="digit" 
               v-model="formData.bmi" 
-              placeholder="自动计算或手动输入" 
+              placeholder="输入或自动计算" 
               class="input"
-              :disabled="true"
             />
           </view>
           
@@ -243,8 +242,7 @@ export default {
     calculateBMI() {
       if (this.formData.height && this.formData.weight) {
         const heightInMeters = this.formData.height / 100;
-        const bmi = (this.formData.weight / (heightInMeters * heightInMeters)).toFixed(2);
-        this.formData.bmi = bmi;
+        this.formData.bmi = Math.round((this.formData.weight / (heightInMeters * heightInMeters)) * 100) / 100;
       }
     },
     

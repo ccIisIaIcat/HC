@@ -5,6 +5,13 @@
       <text class="subtitle">查看您的健康指标变化趋势</text>
     </view>
     
+    <!-- 自定义导航栏 -->
+    <CustomNavBar 
+      title="健康状态历史" 
+      :showBack="true"
+      :showHome="true"
+    />
+    
     <!-- 日期选择器 -->
     <view class="date-picker">
       <picker 
@@ -213,6 +220,7 @@ export default {
 <style>
 .container {
   padding: 30rpx;
+  padding-top: 168rpx; /* 为导航栏预留空间 */
   background-color: #f8f8f8;
   min-height: 100vh;
 }

@@ -1,37 +1,31 @@
 <template>
   <view class="dashboard-container">
-    <view class="function-grid">
-      <view class="function-item" @click="navigateTo('/pages/food-analysis/index')">
-        <text class="function-title">食物分析</text>
-        <view class="cyber-line"></view>
+    <!-- 页面内容区域 -->
+    <view class="content-area">
+      <view class="welcome-section">
+        <text class="cat-quote">今天好好吃饭了吗~🐱</text>
       </view>
       
-      <view class="function-item" @click="navigateTo('/pages/food-history/index')">
-        <text class="function-title">饮食历史</text>
-        <view class="cyber-line"></view>
-      </view>
-      
-      <view class="function-item" @click="navigateTo('/pages/food-history/visualization')">
-        <text class="function-title">饮食可视化分析</text>
-        <view class="cyber-line"></view>
-      </view>
-      
-      <view class="function-item" @click="navigateTo('/pages/health/analysis')">
-        <text class="function-title">健康分析</text>
-        <view class="cyber-line"></view>
-      </view>
-      
-      <view class="function-item" @click="navigateTo('/pages/health-state/index')">
-        <text class="function-title">健康状态记录</text>
-        <view class="cyber-line"></view>
+      <view class="function-grid">
+        <view class="function-item" @click="navigateTo('/pages/food-analysis/index')">
+          <text class="function-title">食物分析</text>
+          <view class="cyber-line"></view>
+        </view>
+        
+        <view class="function-item" @click="navigateTo('/pages/health-state/index')">
+          <text class="function-title">健康状态</text>
+          <view class="cyber-line"></view>
+        </view>
       </view>
     </view>
   </view>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref, onMounted } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
 import api from '@/api';
+import CustomNavBar from '@/components/CustomNavBar.vue';
 
 const user = ref<any>(null);
 const loading = ref(false);
@@ -93,9 +87,37 @@ const navigateTo = (url: string) => {
   });
 };
 
-// 页面加载时获取用户信息
+// 检查应用更新
+const checkAppUpdate = async () => {
+  try {
+    // #ifdef APP-PLUS
+    const currentPlatform = uni.getSystemInfoSync().platform;
+    const currentVersion = plus.runtime.version;
+    if (currentPlatform && currentVersion) {
+      await api.appUpdates.checkAndPromptUpdate(currentPlatform, currentVersion);
+    }
+    // #endif
+
+    // #ifdef H5
+    const appVersion = import.meta.env.VITE_APP_VERSION;
+    if (appVersion) {
+      await api.appUpdates.checkAndPromptUpdate('h5', appVersion);
+    }
+    // #endif
+  } catch (error) {
+    console.error('检查更新失败:', error);
+  }
+};
+
+// 页面加载时获取用户信息和检查更新
 onMounted(() => {
   fetchUserInfo();
+  checkAppUpdate();
+});
+
+// 在页面显示时检查更新
+onShow(() => {
+  checkAppUpdate();
 });
 </script>
 
@@ -106,7 +128,6 @@ onMounted(() => {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 20px;
   position: relative;
 }
 
@@ -121,14 +142,62 @@ onMounted(() => {
   z-index: 1;
 }
 
+.content-area {
+  position: relative;
+  z-index: 2;
+  padding-top: 74px; /* 状态栏高度 + 导航栏高度 */
+  padding: 74px 20px 20px 20px;
+}
+
+.welcome-section {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 40px;
+}
+
+.welcome-text {
+  font-size: 24px;
+  color: #00DFFF;
+  text-shadow: 0 0 10px rgba(0, 223, 255, 0.5);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.sub-text {
+  font-size: 16px;
+  color: #CCCCCC;
+  display: block;
+}
+
+.cat-quote {
+  font-size: 16px;
+  color: #00DFFF;
+  display: block;
+  margin-top: 15px;
+  font-style: italic;
+  text-shadow: 0 0 10px rgba(0, 223, 255, 0.3);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
 .function-grid {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 30px;
   padding: 20px;
-  margin-top: 60px;
+  margin-bottom: 40px;
 }
 
 .function-item {
@@ -144,7 +213,7 @@ onMounted(() => {
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 223, 255, 0.2);
   transition: all 0.3s ease;
-  aspect-ratio: 1 / 1; /* 使按钮成为正方形 */
+  aspect-ratio: 2 / 1;
 }
 
 .function-item::before {
@@ -173,31 +242,6 @@ onMounted(() => {
   opacity: 1;
 }
 
-.cat-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 30px;
-  height: 30px;
-  transform: rotate(15deg);
-  animation: cat-bounce 2s ease-in-out infinite;
-}
-
-.cat-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-@keyframes cat-bounce {
-  0%, 100% {
-    transform: rotate(15deg) translateY(0);
-  }
-  50% {
-    transform: rotate(15deg) translateY(-5px);
-  }
-}
-
 .cyber-line {
   position: absolute;
   bottom: 0;
@@ -222,7 +266,7 @@ onMounted(() => {
 }
 
 .function-title {
-  font-size: 18px;
+  font-size: 24px;
   color: #00DFFF;
   text-align: center;
   text-transform: uppercase;

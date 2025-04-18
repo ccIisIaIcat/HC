@@ -8,6 +8,13 @@
       <text class="loading-text">正在加载数据...</text>
     </view>
 
+    <!-- 自定义导航栏 -->
+    <CustomNavBar 
+      title="健康状态记录" 
+      :showBack="true"
+      :showHome="true"
+    />
+
     <!-- 编辑表单 -->
     <view class="edit-form" v-if="!loading">
       <!-- 身体测量指标部分 -->
@@ -47,8 +54,7 @@
                 type="digit" 
                 v-model="formData.bmi" 
                 class="measurement-input"
-                disabled
-                placeholder="自动计算"
+                placeholder="输入或自动计算"
               />
             </view>
           </view>
@@ -214,6 +220,7 @@ export default {
   },
   
   onLoad() {
+    // 页面加载时立即获取最新记录
     this.loadLatestHealthState();
   },
   
@@ -223,9 +230,13 @@ export default {
       this.loading = true;
       try {
         const res = await getLatestHealthState();
+        console.log('获取到的健康状态记录:', res); // 添加调试日志
+        
         if (res && res.record) {
-          // 填充表单数据
           const record = res.record;
+          console.log('原始记录数据:', record); // 添加调试日志
+          
+          // 填充表单数据
           this.formData = {
             height: record.height || '',
             weight: record.weight || '',
@@ -240,10 +251,14 @@ export default {
             notes: record.notes || ''
           };
           
-          // 如果没有BMI，计算BMI
+          console.log('填充后的表单数据:', this.formData); // 添加调试日志
+          
+          // 如果有身高和体重但没有BMI，则计算BMI
           if (this.formData.height && this.formData.weight && !this.formData.bmi) {
             this.calculateBMI();
           }
+        } else {
+          console.log('未获取到健康状态记录'); // 添加调试日志
         }
       } catch (error) {
         console.error('获取最新健康状态记录失败', error);
@@ -258,16 +273,22 @@ export default {
     
     // 计算BMI
     calculateBMI() {
-      if (this.formData.height && this.formData.weight) {
+      if (this.formData.height && this.formData.weight && !this.formData.bmi) {
         const heightInMeters = this.formData.height / 100;
-        const bmi = (this.formData.weight / (heightInMeters * heightInMeters)).toFixed(2);
-        this.formData.bmi = bmi;
+        this.formData.bmi = Math.round((this.formData.weight / (heightInMeters * heightInMeters)) * 100) / 100;
       }
     },
     
-    // 监听身高和体重变化，自动计算BMI
-    watchHeightWeight() {
-      if (this.formData.height && this.formData.weight) {
+    // 监听身高变化
+    onHeightChange() {
+      if (!this.formData.bmi) {
+        this.calculateBMI();
+      }
+    },
+    
+    // 监听体重变化
+    onWeightChange() {
+      if (!this.formData.bmi) {
         this.calculateBMI();
       }
     },
@@ -283,9 +304,6 @@ export default {
         return;
       }
       
-      // 计算BMI
-      this.calculateBMI();
-      
       this.loading = true;
       
       try {
@@ -293,7 +311,7 @@ export default {
         const data = {
           height: parseFloat(this.formData.height),
           weight: parseFloat(this.formData.weight),
-          bmi: parseFloat(this.formData.bmi),
+          bmi: this.formData.bmi ? parseFloat(this.formData.bmi) : null,
           body_fat_percentage: this.formData.body_fat_percentage ? parseFloat(this.formData.body_fat_percentage) : null,
           temperature: this.formData.temperature ? parseFloat(this.formData.temperature) : null,
           heart_rate: this.formData.heart_rate ? parseInt(this.formData.heart_rate) : null,
@@ -333,11 +351,6 @@ export default {
         url: '/pages/health-state/history'
       });
     }
-  },
-  
-  watch: {
-    'formData.height': 'watchHeightWeight',
-    'formData.weight': 'watchHeightWeight'
   }
 };
 </script>
@@ -347,6 +360,7 @@ export default {
   min-height: 100vh;
   background-color: #1a1a1a;
   padding: 20px;
+  padding-top: 84px; /* 为导航栏预留空间 */
   position: relative;
   z-index: 1;
 }
@@ -413,6 +427,9 @@ export default {
 .item-label {
   color: #ffffff;
   font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
 }
 
 .item-input-wrapper {
@@ -437,7 +454,8 @@ export default {
 .unit {
   color: #00dfff;
   font-size: 14px;
-  margin-left: 5px;
+  margin-left: 8px;
+  font-weight: 500;
 }
 
 .notes-section {
