@@ -64,13 +64,14 @@ func main() {
 	// 创建健康分析处理器
 	healthAnalysisHandler := handlers.NewHealthAnalysisHandler(handlers.GetDB(), openAIKey, model)
 
+	// 创建静态文件处理器
+	staticFileHandler := handlers.NewStaticFileHandler()
+
 	// 设置食物分析处理器用于其他处理器
 	handlers.SetFoodAnalysisHandler(foodAnalysisHandler)
 
 	// 设置静态文件服务
-	r.Static("/static", "./frontend/build/static")
-	r.StaticFile("/", "./frontend/build/index.html")
-	r.StaticFile("/favicon.ico", "./frontend/build/favicon.ico")
+	r.Static("/static", "./static")
 
 	// API路由
 	api := r.Group("/api")
@@ -80,6 +81,19 @@ func main() {
 		api.POST("/login", handlers.Login)
 		api.POST("/verify-email", handlers.VerifyEmail)
 		api.POST("/resend-verification", handlers.ResendVerification)
+
+		// 静态文件路由（公开访问）
+		api.GET("/image/:filename", staticFileHandler.GetImageInfo)
+
+		// 用户物品相关路由（公开访问）
+		api.GET("/user-items/:user_id", handlers.GetUserItems)
+		api.GET("/user-items/:user_id/:item_id", handlers.GetUserItemDetails)
+		api.GET("/user-items/:user_id/source", handlers.GetUserItemsBySource)
+		api.GET("/user-items/:user_id/count", handlers.GetUserItemCount)
+		api.GET("/user-items/:user_id/check/:item_id", handlers.CheckUserHasItem)
+		api.POST("/user-items/:user_id", handlers.CreateUserItem)
+		api.PUT("/user-items/:user_id/:item_id/quantity", handlers.UpdateUserItemQuantity)
+		api.DELETE("/user-items/:user_id/:item_id", handlers.DeleteUserItem)
 
 		// 需要认证的路由
 		authorized := api.Group("/")
@@ -111,14 +125,28 @@ func main() {
 			authorized.POST("/check-in", handlers.HandleCheckIn)        // 用户打卡
 			authorized.GET("/check-in/today", handlers.GetTodayCheckIn) // 获取今日打卡状态
 			authorized.GET("/check-ins", handlers.GetUserCheckIns)      // 获取用户所有打卡记录
+
+			// 物品查询相关路由（所有用户可访问）
+			authorized.GET("/items", handlers.GetItems)
+			authorized.GET("/items/:id", handlers.GetItem)
+			authorized.GET("/items/search", handlers.SearchItems)
+			authorized.GET("/items/sources", handlers.GetItemSources)
 		}
 
 		// 管理员路由
 		admin := authorized.Group("/admin")
 		admin.Use(handlers.AdminAuthMiddleware())
 		{
+			// 静态文件上传路由（仅管理员可访问）
+			admin.POST("/upload/image", staticFileHandler.UploadImage)
+
 			admin.GET("/users", handlers.GetUsers)
 			admin.GET("/stats", handlers.GetStats)
+
+			// 物品管理路由（仅管理员可访问）
+			admin.POST("/items", handlers.CreateItem)
+			admin.PUT("/items/:id", handlers.UpdateItem)
+			admin.DELETE("/items/:id", handlers.DeleteItem)
 		}
 
 		// 应用更新相关路由

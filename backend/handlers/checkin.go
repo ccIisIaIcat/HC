@@ -8,6 +8,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 定义中国时区
+var cst *time.Location
+
+func init() {
+	var err error
+	cst, err = time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		// 如果加载失败，手动设置UTC+8
+		cst = time.FixedZone("CST", 8*3600)
+	}
+}
+
 // CheckInRequest 打卡请求结构
 type CheckInRequest struct {
 	Content string `json:"content" binding:"-"` // 打卡内容（可选）
@@ -54,8 +66,8 @@ func HandleCheckIn(c *gin.Context) {
 	}
 
 	// 3. 检查用户今日是否有食物记录
-	today := time.Now()
-	startOfDay := time.Date(today.Year(), today.Month(), today.Day(), 0, 0, 0, 0, today.Location())
+	today := time.Now().In(cst)
+	startOfDay := time.Date(today.Year(), today.Month(), today.Day(), 0, 0, 0, 0, cst)
 	endOfDay := startOfDay.Add(24 * time.Hour)
 
 	foodRecords, err := models.GetUserFoodRecords(userID.(uint), startOfDay, endOfDay)
@@ -89,7 +101,7 @@ func HandleCheckIn(c *gin.Context) {
 	// 5. 创建打卡记录
 	checkIn := &models.CheckIn{
 		UserID:    userID.(uint),
-		CheckInAt: time.Now(),
+		CheckInAt: time.Now().In(cst), // 使用中国时区
 		Content:   req.Content,
 	}
 
@@ -133,8 +145,8 @@ func GetTodayCheckIn(c *gin.Context) {
 	}
 
 	// 检查今日是否有食物记录
-	today := time.Now()
-	startOfDay := time.Date(today.Year(), today.Month(), today.Day(), 0, 0, 0, 0, today.Location())
+	today := time.Now().In(cst)
+	startOfDay := time.Date(today.Year(), today.Month(), today.Day(), 0, 0, 0, 0, cst)
 	endOfDay := startOfDay.Add(24 * time.Hour)
 
 	foodRecords, err := models.GetUserFoodRecords(userID.(uint), startOfDay, endOfDay)

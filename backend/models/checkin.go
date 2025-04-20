@@ -6,6 +6,18 @@ import (
 	"gorm.io/gorm"
 )
 
+// 定义中国时区
+var cst *time.Location
+
+func init() {
+	var err error
+	cst, err = time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		// 如果加载失败，手动设置UTC+8
+		cst = time.FixedZone("CST", 8*3600)
+	}
+}
+
 // CheckIn 用户打卡记录模型
 type CheckIn struct {
 	gorm.Model
@@ -28,9 +40,13 @@ func GetUserRecentCheckIns(userID uint, limit int) ([]CheckIn, error) {
 // 获取用户今日是否已打卡
 func HasUserCheckedInToday(userID uint) (bool, error) {
 	var count int64
-	today := time.Now().Format("2006-01-02")
+	now := time.Now().In(cst)
+	startOfDay := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, cst)
+	endOfDay := startOfDay.Add(24 * time.Hour)
+
 	result := DB.Model(&CheckIn{}).
-		Where("user_id = ? AND DATE(check_in_at) = ?", userID, today).
+		Where("user_id = ? AND check_in_at >= ? AND check_in_at < ?",
+			userID, startOfDay, endOfDay).
 		Count(&count)
 	return count > 0, result.Error
 }

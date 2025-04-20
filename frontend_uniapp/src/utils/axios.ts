@@ -70,6 +70,24 @@ const request = (config: any) => {
               return;
             }
             
+            // 处理403禁止访问错误
+            if (res.statusCode === 403) {
+              uni.removeStorageSync('token');
+              uni.removeStorageSync('user');
+              uni.showToast({
+                title: '登录信息已失效，请重新登录',
+                icon: 'none',
+                duration: 2000
+              });
+              setTimeout(() => {
+                uni.reLaunch({
+                  url: '/pages/login/index'
+                });
+              }, 1500);
+              reject(new Error('登录信息已失效，请重新登录'));
+              return;
+            }
+            
             // 处理其他状态码
             if (res.statusCode >= 200 && res.statusCode < 300) {
               resolve(res.data);

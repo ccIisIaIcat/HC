@@ -8,12 +8,12 @@ from pathlib import Path
 
 # 配置参数
 CONFIG = {
-    'apk_path': 'FTM_beta_1.0.3.apk',  # APK文件路径
-    'version': '1.0.3',     # 版本号
+    'apk_path': 'FTM_beta_1.0.8.apk',  # APK文件路径
+    'version': '1.0.8',     # 版本号
     'platform': 'android',  # 平台
     'force_update': False,  # 是否强制更新
     'update_notes': '新版本更新说明',  # 更新说明
-    'server_url': 'http://localhost:8080',  # 修改为本地地址
+    'server_url': 'https://jesuvukndxpo.sealoshzh.site',  # 修改为本地地址
     'admin_email': 'admin@yourdomain.com',  # 管理员邮箱
     'admin_password': 'admin888'  # 管理员密码
 }
