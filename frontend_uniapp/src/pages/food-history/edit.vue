@@ -516,38 +516,75 @@ const handleSave = async () => {
   try {
     loading.value = true;
     
-    // 准备更新的数据
+    // 确保所有数值都是有效的浮点数
+    const validateNumber = (value: any): number => {
+      const num = parseFloat(value);
+      return isNaN(num) ? 0 : num;
+    };
+
+    // 准备更新的数据，确保类型正确
     const updateData = {
-      ...editableRecord.value,
-      id: id, // 使用本地变量
+      food_name: String(editableRecord.value.food_name || ''),
+      weight: validateNumber(editableRecord.value.weight),
       meal_type: mealTypes[mealTypeIndex.value],
-      notes: notes.value,
-      // 确保包含record_time字段
-      record_time: editableRecord.value.record_time || new Date().toISOString()
+      notes: String(notes.value || ''),
+      // 确保时间格式正确
+      record_time: new Date(editableRecord.value.record_time || Date.now()).toISOString(),
+      
+      // 基本营养素
+      calories: validateNumber(editableRecord.value.calories),
+      protein: validateNumber(editableRecord.value.protein),
+      total_fat: validateNumber(editableRecord.value.total_fat),
+      saturated_fat: validateNumber(editableRecord.value.saturated_fat),
+      trans_fat: validateNumber(editableRecord.value.trans_fat),
+      unsaturated_fat: validateNumber(editableRecord.value.unsaturated_fat),
+      carbohydrates: validateNumber(editableRecord.value.carbohydrates),
+      sugar: validateNumber(editableRecord.value.sugar),
+      fiber: validateNumber(editableRecord.value.fiber),
+      
+      // 维生素
+      vitamin_a: validateNumber(editableRecord.value.vitamin_a),
+      vitamin_c: validateNumber(editableRecord.value.vitamin_c),
+      vitamin_d: validateNumber(editableRecord.value.vitamin_d),
+      vitamin_b1: validateNumber(editableRecord.value.vitamin_b1),
+      vitamin_b2: validateNumber(editableRecord.value.vitamin_b2),
+      
+      // 矿物质
+      calcium: validateNumber(editableRecord.value.calcium),
+      iron: validateNumber(editableRecord.value.iron),
+      sodium: validateNumber(editableRecord.value.sodium),
+      potassium: validateNumber(editableRecord.value.potassium)
     };
     
-    console.log('准备更新数据:', JSON.stringify(updateData).substring(0, 500), '使用ID:', id);
+    // 打印完整的更新数据用于调试
+    console.log('准备更新数据:', JSON.stringify(updateData, null, 2));
     
     // 使用API封装调用更新记录
     console.log('调用API: updateFoodRecord，ID:', id);
-    await api.food.updateFoodRecord(id, updateData);
+    const response = await api.food.updateFoodRecord(id, updateData);
     
-    uni.showToast({
-      title: '食物记录更新成功',
-      icon: 'success'
-    });
-    
-    // 返回到记录列表
-    setTimeout(() => {
-      uni.navigateBack();
-    }, 1500);
+    if (response && response.record) {
+      uni.showToast({
+        title: '食物记录更新成功',
+        icon: 'success',
+        duration: 2000
+      });
+      
+      // 返回到记录列表
+      setTimeout(() => {
+        uni.navigateBack();
+      }, 1500);
+    } else {
+      throw new Error('更新失败：服务器未返回有效响应');
+    }
     
   } catch (err: any) {
     console.error('更新食物记录失败:', err);
     error.value = '更新食物记录失败: ' + (err.message || '未知错误');
     uni.showToast({
       title: '更新失败，请重试',
-      icon: 'none'
+      icon: 'none',
+      duration: 2000
     });
   } finally {
     loading.value = false;

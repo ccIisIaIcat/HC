@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>饭团猫 - 健康饮食助手</title>
+    <link rel="stylesheet" href="/download/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="/static/pic/logo.png" alt="饭团猫" class="logo-img">
+                <span class="logo-text">饭团猫</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#features">功能介绍</a></li>
+                    <li><a href="#download">立即下载</a></li>
+                    <li><a href="#screenshots">应用截图</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>饭团猫 健康饮食助手</h1>
+            <p>您的个人健康管理专家，帮助您记录饮食、分析营养成分、追踪健康状态，让健康生活变得简单有趣！</p>
+            <a href="#download" class="btn">立即下载</a>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <h2 class="section-title">主要功能</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🍲</div>
+                <h3>食物识别与分析</h3>
+                <p>只需拍照上传食物图片，AI 将自动识别食物并分析其营养成分，让您清楚了解每一餐的健康指数。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>营养数据追踪</h3>
+                <p>记录并追踪每日摄入的卡路里、蛋白质、脂肪和碳水化合物等营养数据，帮助您合理规划饮食。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>健康状态监测</h3>
+                <p>记录体重、BMI等身体指标变化，通过直观的图表展示健康趋势，助您实现健康目标。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3>成就系统</h3>
+                <p>完成健康挑战获得成就徽章，增加健康生活的乐趣，激励您持续保持良好的饮食习惯。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>社区互动</h3>
+                <p>加入健康饮食社区，分享您的健康食谱和经验，与志同道合的朋友一起成长。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔔</div>
+                <h3>健康提醒</h3>
+                <p>定制个性化的饮食和健康提醒，帮助您养成规律的生活习惯，不错过每一个健康时刻。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="download-section" id="download">
+        <h2 class="section-title">立即下载</h2>
+        <p class="section-description">
+            下载安卓版应用，开始您的健康饮食之旅！点击下方按钮下载安装包。
+        </p>
+        
+        <div class="download-box">
+            <div class="download-info" id="downloadInfo">
+                <h3>饭团猫 Android 版</h3>
+                <p>版本：<span id="appVersion">加载中...</span></p>
+                <p>适用于 Android 5.0 及以上版本</p>
+                <p>大小：<span id="appSize">加载中...</span></p>
+                <a href="#" class="btn download-btn" id="downloadBtn">立即下载</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="screenshots" id="screenshots">
+        <h2 class="section-title">应用截图</h2>
+        <div class="screenshot-grid">
+            <div class="screenshot">
+                <img src="/static/pic/screenshot1.jpg" alt="食物分析界面">
+            </div>
+            <div class="screenshot">
+                <img src="/static/pic/screenshot2.jpg" alt="营养数据追踪">
+            </div>
+            <div class="screenshot">
+                <img src="/static/pic/screenshot3.jpg" alt="健康状态监测">
+            </div>
+            <div class="screenshot">
+                <img src="/static/pic/screenshot4.jpg" alt="社区互动">
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">关于我们</a>
+                <a href="#">隐私政策</a>
+                <a href="#">使用条款</a>
+                <a href="#">联系我们</a>
+                <a href="#">帮助中心</a>
+            </div>
+            <p class="copyright">&copy; 2023-2024 饭团猫团队 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+    // 获取最新版本信息
+    async function getLatestVersion() {
+        try {
+            const response = await fetch('/api/app-updates?platform=android');
+            const data = await response.json();
+            
+            if (data.data && data.data.length > 0) {
+                const latestUpdate = data.data[0]; // 获取最新版本
+                
+                // 更新页面信息
+                document.getElementById('appVersion').textContent = latestUpdate.version;
+                document.getElementById('appSize').textContent = formatFileSize(latestUpdate.file_size);
+                
+                // 更新下载按钮链接
+                const downloadBtn = document.getElementById('downloadBtn');
+                downloadBtn.href = latestUpdate.update_url;
+            }
+        } catch (error) {
+            console.error('获取版本信息失败:', error);
+            document.getElementById('appVersion').textContent = '获取失败';
+            document.getElementById('appSize').textContent = '获取失败';
+        }
+    }
+
+    // 格式化文件大小
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // 页面加载完成后获取版本信息
+    document.addEventListener('DOMContentLoaded', getLatestVersion);
+    </script>
+</body>
+</html> 

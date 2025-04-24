@@ -1,0 +1,355 @@
+:root {
+    --primary-color: #00DFFF;
+    --secondary-color: #00BFFF;
+    --text-color: #ffffff;
+    --bg-color: #121212;
+    --card-bg: rgba(0, 0, 0, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+header {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 15px rgba(0, 223, 255, 0.2);
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    margin-left: 25px;
+}
+
+nav ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: var(--primary-color);
+}
+
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    text-shadow: 0 0 15px rgba(0, 223, 255, 0.5);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #f0f0f0;
+}
+
+.btn {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: #000;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin: 10px;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(0, 223, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 223, 255, 0.7);
+}
+
+.features {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.2rem;
+    color: var(--primary-color);
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.section-title:after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 3px;
+    background-color: var(--primary-color);
+}
+
+.section-description {
+    margin-bottom: 30px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background-color: var(--card-bg);
+    border: 1px solid rgba(0, 223, 255, 0.3);
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.feature-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    color: var(--primary-color);
+}
+
+.download-section {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 70px 20px;
+    text-align: center;
+}
+
+.download-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 223, 255, 0.3);
+}
+
+.download-info {
+    text-align: center;
+    padding: 15px;
+    width: 100%;
+}
+
+.download-info h3 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.download-info p {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.download-btn {
+    margin: 25px 0 0 0;
+    font-size: 1.2rem;
+    padding: 15px 40px;
+}
+
+.web-access {
+    margin-top: 40px;
+    padding: 20px;
+    opacity: 0.8;
+}
+
+.web-access p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1.1rem;
+    border-bottom: 1px dotted var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.link:hover {
+    color: var(--secondary-color);
+    border-bottom-color: var(--secondary-color);
+}
+
+.screenshots {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.screenshot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.screenshot {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.screenshot:hover {
+    transform: scale(1.03);
+}
+
+.screenshot img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+footer {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+}
+
+.copyright {
+    color: #999;
+    font-size: 0.85rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    nav ul {
+        display: none;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .download-box {
+        padding: 25px;
+    }
+    
+    .download-info {
+        text-align: center;
+    }
+    
+    .qrcode-img {
+        width: 180px;
+        height: 180px;
+    }
+} 

@@ -3,6 +3,7 @@
 在 manifest.json 中配置应用当前版本号
 在 App.vue 中获取并存储当前版本号
 可以通过 uni.getSystemInfo() 获取平台信息（android/ios）
+
 检查更新逻辑
 在 api/app-updates.ts 中封装更新相关的 API 请求：
 检查更新接口

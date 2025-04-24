@@ -87,37 +87,37 @@ const navigateTo = (url: string) => {
   });
 };
 
-// 检查应用更新
-const checkAppUpdate = async () => {
-  try {
-    // #ifdef APP-PLUS
-    const currentPlatform = uni.getSystemInfoSync().platform;
-    const currentVersion = plus.runtime.version;
-    if (currentPlatform && currentVersion) {
-      await api.appUpdates.checkAndPromptUpdate(currentPlatform, currentVersion);
-    }
-    // #endif
+// // 检查应用更新
+// const checkAppUpdate = async () => {
+//   try {
+//     // #ifdef APP-PLUS
+//     const currentPlatform = uni.getSystemInfoSync().platform;
+//     const currentVersion = plus.runtime.version;
+//     if (currentPlatform && currentVersion) {
+//       await api.appUpdates.checkAndPromptUpdate(currentPlatform, currentVersion);
+//     }
+//     // #endif
 
-    // #ifdef H5
-    const appVersion = import.meta.env.VITE_APP_VERSION;
-    if (appVersion) {
-      await api.appUpdates.checkAndPromptUpdate('h5', appVersion);
-    }
-    // #endif
-  } catch (error) {
-    console.error('检查更新失败:', error);
-  }
-};
+//     // #ifdef H5
+//     const appVersion = import.meta.env.VITE_APP_VERSION;
+//     if (appVersion) {
+//       await api.appUpdates.checkAndPromptUpdate('h5', appVersion);
+//     }
+//     // #endif
+//   } catch (error) {
+//     console.error('检查更新失败:', error);
+//   }
+// };
 
 // 页面加载时获取用户信息和检查更新
 onMounted(() => {
   fetchUserInfo();
-  checkAppUpdate();
+  // checkAppUpdate();
 });
 
 // 在页面显示时检查更新
 onShow(() => {
-  checkAppUpdate();
+    // checkAppUpdate();
 });
 </script>
 

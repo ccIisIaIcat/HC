@@ -43,4 +43,17 @@ export const isDev = currentEnv === ENV.development;
 export const isProd = currentEnv === ENV.production;
 
 // 导出是否为测试环境
-export const isTest = currentEnv === ENV.test; 
+export const isTest = currentEnv === ENV.test;
+
+// API基础URL
+export const API_BASE_URL = 'https://jesuvukndxpo.sealoshzh.site/api';
+export const STATIC_BASE_URL = 'https://jesuvukndxpo.sealoshzh.site';
+
+// 其他配置项
+export const CONFIG = {
+  // 每页显示的物品数量
+  ITEMS_PER_PAGE: 9,
+  
+  // 默认图片
+  DEFAULT_ITEM_IMAGE: '/static/collections/cat-locked.png'
+}; 

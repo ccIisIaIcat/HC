@@ -73,6 +73,14 @@ func main() {
 	// 设置静态文件服务
 	r.Static("/static", "./static")
 
+	// 设置下载页面
+	r.Static("/download", "./download")
+
+	// 设置下载页面根路径
+	r.GET("/download", func(c *gin.Context) {
+		c.File("./download/index.html")
+	})
+
 	// API路由
 	api := r.Group("/api")
 	{

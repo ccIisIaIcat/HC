@@ -153,7 +153,7 @@
           <view class="record-form">
             <text class="form-title">保存记录</text>
             
-            <view class="form-item">
+            <view class="form-item meal-type-container">
               <text class="form-label">餐食类型</text>
               <picker 
                 :value="mealTypeIndex" 
@@ -932,35 +932,47 @@ const handleDiscardRecord = () => {
 
 .record-form {
   margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(0, 223, 255, 0.3);
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 223, 255, 0.3);
 }
 
 .form-title {
-  color: #00DFFF;
-  font-size: 18px;
+  color: var(--primary-color);
+  font-size: 16px;
   margin-bottom: 15px;
+  font-weight: bold;
 }
 
 .form-item {
   margin-bottom: 15px;
 }
 
+.meal-type-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .form-label {
   color: rgba(255, 255, 255, 0.8);
   font-size: 14px;
-  margin-bottom: 5px;
 }
 
 .meal-type-picker {
+  width: 100%;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(0, 223, 255, 0.3);
   border-radius: 4px;
-  padding: 10px;
+  padding: 8px 12px;
+  margin-top: 4px;
 }
 
 .picker-value {
   color: #fff;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .notes-textarea {
@@ -969,8 +981,10 @@ const handleDiscardRecord = () => {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(0, 223, 255, 0.3);
   border-radius: 4px;
-  padding: 10px;
+  padding: 8px 12px;
   color: #fff;
+  font-size: 14px;
+  margin-top: 4px;
 }
 
 .form-buttons {

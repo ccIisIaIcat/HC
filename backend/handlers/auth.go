@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"backend/achievement"
 	"backend/models"
 	"backend/utils"
 	"fmt"
@@ -157,7 +158,7 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "生成token失败"})
 		return
 	}
-
+	achievement.CheckAchievements(user.ID)
 	log.Printf("登录成功: %s", req.Email)
 	c.JSON(http.StatusOK, gin.H{
 		"token": token,
@@ -311,6 +312,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		c.Set("user_id", claims.UserID)
 		c.Set("role", claims.Role)
+		achievement.CheckAchievements(claims.UserID)
 		c.Next()
 	}
 }

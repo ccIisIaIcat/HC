@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"backend/achievement"
 	"backend/models"
 	"net/http"
 	"time"
@@ -112,7 +113,7 @@ func HandleCheckIn(c *gin.Context) {
 		})
 		return
 	}
-
+	achievement.CheckAchievements(userID.(uint))
 	// 6. 返回成功响应
 	c.JSON(http.StatusOK, CheckInResponse{
 		Success:          true,

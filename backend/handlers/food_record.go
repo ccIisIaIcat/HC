@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"backend/achievement"
 	"backend/models"
 	"errors"
 	"fmt"
@@ -110,7 +111,7 @@ func CreateFoodRecordHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "保存食物记录失败"})
 		return
 	}
-
+	achievement.CheckAchievements(userID.(uint))
 	// 返回成功响应
 	c.JSON(http.StatusOK, gin.H{
 		"message": "食物记录创建成功",
@@ -272,7 +273,7 @@ func UpdateFoodRecordHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "更新记录失败"})
 		return
 	}
-
+	achievement.CheckAchievements(userID.(uint))
 	// 返回更新后的记录
 	c.JSON(http.StatusOK, gin.H{
 		"message": "记录更新成功",
@@ -368,7 +369,7 @@ func AnalyzeAndSaveFoodHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "保存食物记录失败"})
 		return
 	}
-
+	achievement.CheckAchievements(userID.(uint))
 	// 返回成功响应
 	c.JSON(http.StatusOK, gin.H{
 		"message":  "食物分析和记录保存成功",

@@ -254,6 +254,7 @@ const submitCheckIn = async () => {
 
 // 功能按钮点击处理
 const handleTreasureBoxClick = () => {
+  // 跳转到成就/物品页面
   uni.navigateTo({
     url: '/pages/achievements/index'
   });
