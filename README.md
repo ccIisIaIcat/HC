@@ -112,15 +112,3 @@ npm run dev
 npm run build
 ```
 
-### 应用更新部署
-
-1. 上传新版本
-```bash
-# 使用管理脚本上传新版本
-cd admin_script
-python upload_apk.py --version "1.0.0" --file "path/to/app.apk"
-```
-
-2. 检查更新
-- 应用会自动检查新版本
-- 访问 `/download` 页面获取最新版本
